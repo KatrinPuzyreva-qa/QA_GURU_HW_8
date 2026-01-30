@@ -5,6 +5,9 @@ from selene.support.conditions import have
 
 class RegistrationPage:
 
+    def __init__(self):
+        pass
+
     def open(self):
         browser.open('https://demoqa.com/automation-practice-form')
         browser.driver.execute_script("$('#fixedban').remove()")
