@@ -6,6 +6,8 @@ from selene.support.conditions import have
 class RegistrationPage:
 
     def __init__(self):
+        self.year = browser.element('.react-datepicker__year-select')
+        self.month = browser.element('.react-datepicker__month-select')
         pass
 
     def open(self):
@@ -34,15 +36,15 @@ class RegistrationPage:
     def fill_date_of_birth(self, year, month, day):
         browser.element('#dateOfBirthInput').click()
 
-        browser.element('.react-datepicker__year-select').click()
-        browser.element('.react-datepicker__year-select') \
+        self.year.click()
+        self.year \
             .all('option') \
             .element_by(have.text(year)) \
             .click()
 
         # Выбираем месяц
-        browser.element('.react-datepicker__month-select').click()
-        browser.element('.react-datepicker__month-select') \
+        self.month.click()
+        self.month \
             .all('option') \
             .element_by(have.text(month)) \
             .click()
