@@ -3,7 +3,7 @@ from QA_GURU_HW_8.RegistrationPage import RegistrationPage
 
 def test_fill_form():
 
-    registration_page = RegistrationPage
+    registration_page = RegistrationPage()
 
     registration_page.open()
     registration_page.fill_first_name('Таисия')
@@ -20,7 +20,6 @@ def test_fill_form():
     registration_page.fill_city('Karnal')
     registration_page.submit()
     registration_page.should_have_submission_confirmation('Thanks for submitting the form')
-
     registration_page.should_have_registered_user_with(
         'Таисия Повали',
         'user@mail.ru',

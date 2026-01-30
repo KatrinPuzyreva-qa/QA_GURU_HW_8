@@ -1,6 +1,5 @@
 import os
-from idlelib import browser
-
+from selene import browser
 from selene.support.conditions import have
 
 
