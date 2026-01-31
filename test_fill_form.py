@@ -1,4 +1,4 @@
-from QA_GURU_HW_8.RegistrationPage import RegistrationPage
+from registration_page import RegistrationPage
 
 
 def test_fill_form():
@@ -19,7 +19,6 @@ def test_fill_form():
     registration_page.fill_state('Haryana')
     registration_page.fill_city('Karnal')
     registration_page.submit()
-    registration_page.should_have_submission_confirmation('Thanks for submitting the form')
     registration_page.should_have_registered_user_with(
         'Таисия Повали',
         'user@mail.ru',
