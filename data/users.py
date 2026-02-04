@@ -17,5 +17,3 @@ class User:
     state: str = 'Haryana'
     city: str = 'Karnal'
 
-
-
