@@ -1,6 +1,7 @@
-import os
-from selene import browser, be
+from pathlib import Path
+from selene import browser, be, have
 from selene.support.conditions import have
+from data.users import User
 
 
 class RegistrationPage:
@@ -58,8 +59,10 @@ class RegistrationPage:
             hobby_id = hobby_map[hobby.strip()]
             browser.element(f'[for="hobbies-checkbox-{hobby_id}"]').click()
 
-    def upload_picture(self):
-        browser.element('#uploadPicture').set_value(os.path.abspath('cat.jpg'))
+    def upload_picture(self,filename='cat.jpg'):
+         base_dir = Path(__file__).parent.parent
+         file_path = str(base_dir / 'tests1' / filename)
+         browser.element('#uploadPicture').send_keys(file_path)
 
     def fill_current_address(self, address):
         browser.element('#currentAddress').type(address)
@@ -71,19 +74,15 @@ class RegistrationPage:
         browser.element('#react-select-4-input').type(city).press_enter()
 
     def submit(self):
-        browser.element('#submit').click()
+        submit_button = browser.element('#submit')
+        web_submit_button = submit_button.locate()
+        browser.driver.execute_script('arguments[0].click();', web_submit_button)
 
     def should_have_submission_confirmation(self):
-        browser.element('.modal-content').should(have.text('Thanks for submitting the form'))
+        browser.element('.modal-content').should(be.visible).should(have.text('Thanks for submitting the form'))
+        browser.element('#closeLargeModal').click()
 
-
-    def should_have_registered_user_with(self, full_name, email, gender, mobile_number, date_of_birth,
-                                         subject, hobbies, file, address, city):
-        browser.element('.table').all('td').even.should(
-            have.exact_texts(full_name, email, gender, mobile_number, date_of_birth, subject, hobbies, file, address, city)
-        )
-
-    def fill_registration_form(self, user):
+    def fill_registration_form(self, user: User):
         self.fill_first_name(user.first_name)
         self.fill_last_name(user.last_name)
         self.fill_email(user.email)
@@ -92,8 +91,27 @@ class RegistrationPage:
         self.fill_date_of_birth(user.birth_year, user.birth_month, user.birth_day)
         self.fill_subjects(user.subject)
         self.fill_hobbies(user.hobbies)
-        self.upload_picture()
+        self.upload_picture(user.picture)
         self.fill_current_address(user.address)
         self.fill_state(user.state)
         self.fill_city(user.city)
         self.submit()
+
+
+    def should_have_registered_user_with(self, user: User):
+        #browser.element('.table').all('td').even.should(
+        browser.element('.table').all('td')[1::2].should(
+            have.exact_texts(
+                f'{user.first_name} {user.last_name}',
+                user.email,
+                user.gender,
+                user.mobile_number,
+                f"{user.birth_day} {user.birth_month},{user.birth_year}",
+                user.subject,
+                user.hobbies,
+                'cat.jpg',
+                user.address,
+                f'{user.state} {user.city}'
+            )
+        )
+
