@@ -99,7 +99,6 @@ class RegistrationPage:
 
 
     def should_have_registered_user_with(self, user: User):
-        #browser.element('.table').all('td').even.should(
         browser.element('.table').all('td')[1::2].should(
             have.exact_texts(
                 f'{user.first_name} {user.last_name}',
