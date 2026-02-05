@@ -60,7 +60,7 @@ class RegistrationPage:
 
     def upload_picture(self,filename='cat.jpg'):
          base_dir = Path(__file__).parent.parent
-         file_path = str(base_dir / 'tests1' / filename)
+         file_path = str(base_dir / 'tests' / filename)
          browser.element('#uploadPicture').send_keys(file_path)
 
     def fill_current_address(self, address):
